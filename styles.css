@@ -1,0 +1,580 @@
+/* Общие стили */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    margin-top: 80px; /* Высота заголовка */
+    overflow: hidden;
+    position: relative;
+}
+
+/* Стили заголовка */
+.page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: #1a1a1a;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title h1 {
+    font-size: 24px; /* Увеличен размер шрифта */
+    font-weight: 700;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.9);
+    margin: 4px 0 0;
+}
+
+/* Поле поиска */
+.search-container {
+    position: relative;
+    width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 40px 12px 16px; /* Увеличенный отступ для иконки */
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(0,0,0,0.6);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #757575;
+    opacity: 0.7;
+    pointer-events: none;
+    font-size: 18px; /* Увеличен размер иконки */
+}
+
+/* Автодополнение */
+.autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #E0E0E0;
+    border-top: none;
+    max-height: 250px; /* Увеличена высота */
+    overflow-y: auto;
+    z-index: 1002;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0 0 8px 8px;
+}
+
+.autocomplete-list li {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.autocomplete-list li:hover {
+    background: #f0f0f0;
+}
+
+/* Элементы управления масштабированием */
+.control-buttons {
+    display: flex;
+    gap: 12px; /* Увеличен промежуток между кнопками */
+    padding: 8px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    align-items: center;
+}
+
+.zoom-button {
+    padding: 12px 20px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    background: #FFFFFF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    color: #333;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.zoom-button:hover {
+    background: #F5F5F5;
+}
+
+.reset-button {
+    background: #2196F3;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.reset-button:hover {
+    background: #1976D2;
+}
+
+.zoom-button svg, .reset-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Стили графа */
+#graph {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    position: relative;
+}
+
+/* Стили узлов и связей */
+.node circle {
+    stroke: #fff;
+    stroke-width: 2px;
+    transition: transform 0.3s ease, stroke-width 0.3s ease;
+}
+
+.node:hover circle {
+    transform: scale(1.3);
+    stroke-width: 3px;
+}
+
+.node text {
+    pointer-events: none;
+    font-family: 'Roboto', Arial, sans-serif;
+    fill: #333; /* Цвет текста для высокой контрастности */
+    font-size: 14px; /* Размер шрифта для профессий */
+    text-anchor: start; /* Выравнивание текста слева */
+    dominant-baseline: middle;
+    transition: fill 0.3s, font-weight 0.3s, text-shadow 0.3s;
+}
+
+.node.depth-1 text {
+    font-size: 18px; /* Увеличенный размер шрифта для категорий */
+    font-weight: 700;
+    fill: #fff; /* Белый текст для темных категорий */
+    text-anchor: middle; /* Выравнивание текста по центру для категорий */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.node:hover text {
+    fill: #ff9800; /* Цвет подсветки при наведении */
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(255, 152, 0, 0.8);
+}
+
+.link {
+    fill: none;
+    stroke: #888;
+    stroke-width: 2px;
+    opacity: 0.6;
+    stroke-dasharray: 5,5; /* Пунктирные линии для связей */
+    transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s;
+}
+
+.leader-line {
+    fill: none;
+    stroke: #ff9800;
+    stroke-width: 1.5px;
+    stroke-dasharray: 2,2;
+}
+
+/* Всплывающие подсказки */
+.tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1001;
+    transition: opacity 0.3s ease;
+    max-width: 250px;
+}
+
+.tooltip strong {
+    font-size: 16px;
+}
+
+/* Легенда */
+.legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 2px solid #E0E0E0;
+    color: #333;
+}
+
+.legend h4 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.legend-item .legend-color[style*="border: 2px dashed"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+    border: 2px dashed #ccc;
+}
+
+.legend-item .legend-color[style*="border: 2px solid #ff9800"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+    border: 2px solid #ff9800;
+}
+
+/* Фильтры */
+.filters {
+    position: absolute;
+    top: 100px; /* Смещено вниз для улучшения связи с диаграммой */
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-size: 16px;
+    color: #333;
+}
+
+.filters h4 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+}
+
+.filters label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.filters input {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+/* Модальное окно */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1003;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6); /* Увеличена прозрачность фона */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 8% auto; /* Сокращено верхнее отступление */
+    padding: 24px;
+    border: 2px solid #888;
+    width: 90%;
+    max-width: 600px; /* Увеличен максимальный размер */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.modal-content p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* Панель сравнения профессий */
+.comparison-panel {
+    position: absolute;
+    top: 150px; /* Смещено вниз для лучшей видимости */
+    right: 20px;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 350px;
+    max-height: 450px;
+    overflow-y: auto;
+    font-size: 16px;
+    color: #333;
+}
+
+.comparison-panel h3 {
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.comparison-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comparison-panel li {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.comparison-panel li button {
+    background: none;
+    border: none;
+    color: #ff0000;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.comparison-panel li button:hover {
+    text-decoration: underline;
+}
+
+.compare-button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.compare-button:hover {
+    background: #45a049;
+}
+
+/* Адаптивность заголовка и графа */
+@media (max-width: 1024px) {
+    .container {
+        margin-top: 100px; /* Увеличен отступ для мобильных */
+    }
+
+    .filters {
+        top: 120px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .comparison-panel {
+        top: auto;
+        bottom: 20px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .control-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .zoom-button, .reset-button {
+        padding: 14px 24px;
+        font-size: 18px;
+    }
+
+    .legend {
+        bottom: 10px;
+        left: 10px;
+        padding: 12px;
+        font-size: 14px;
+        max-width: calc(100% - 20px);
+    }
+
+    .legend h4 {
+        font-size: 16px;
+    }
+
+    .legend-item {
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .legend-color {
+        width: 16px;
+        height: 16px;
+    }
+
+    .node text {
+        font-size: 14px; /* Уменьшен размер шрифта для мобильных */
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+
+    .comparison-panel {
+        padding: 16px;
+    }
+
+    .compare-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title h1 {
+        font-size: 20px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .search-input {
+        padding: 10px 35px 10px 14px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        font-size: 16px;
+    }
+
+    .control-buttons {
+        gap: 8px;
+    }
+
+    .zoom-button, .reset-button {
+        padding: 10px 16px;
+        font-size: 16px;
+    }
+
+    .filters {
+        top: 130px;
+    }
+
+    .legend {
+        font-size: 12px;
+    }
+
+    .node text {
+        font-size: 12px;
+    }
+
+    .modal-content {
+        padding: 16px;
+    }
+
+    .comparison-panel {
+        padding: 12px;
+    }
+}
+
+/* Доступность: скрытый текст для экранных читалок */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
