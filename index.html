@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Jobs Ecosystem</title>
+    <!-- Подключение Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <!-- Подключение D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Подключение стилей -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1 class="main-title">AI Jobs Ecosystem</h1>
+                <p class="subtitle">Interactive Map of Artificial Intelligence Career Paths</p>
+            </div>
+            <div class="header-controls">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="search" 
+                        placeholder="Search for jobs, skills, or roles..."
+                        class="search-input"
+                        autocomplete="off"
+                        aria-label="Search for jobs, skills, or roles"
+                    >
+                    <span class="search-icon" aria-hidden="true">🔍</span>
+                    <ul class="autocomplete-list" id="autocomplete-list"></ul>
+                </div>
+                
+                <div class="control-buttons" aria-label="Zoom Controls">
+                    <button class="zoom-button" id="zoomIn" title="Zoom in" aria-label="Zoom in" tabindex="0">
+                        <span class="sr-only">Zoom in</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#333" d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+                        </svg>
+                    </button>
+                    <button class="zoom-button" id="zoomOut" title="Zoom out" aria-label="Zoom out" tabindex="0">
+                        <span class="sr-only">Zoom out</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#333" d="M19 13H5v-2h14v2z"/>
+                        </svg>
+                    </button>
+                    <button class="zoom-button reset-button" id="reset" title="Reset to initial view" aria-label="Reset to initial view" tabindex="0">
+                        <span class="sr-only">Reset View</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#fff" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                        </svg>
+                    </button>
+                    <button class="zoom-button fit-button" id="fit" title="Fit to screen" aria-label="Fit to screen" tabindex="0">
+                        <span class="sr-only">Fit to screen</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#333" d="M21 16V8a1 1 0 0 0-1-1h-7V4a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h7v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4h7a1 1 0 0 0 1-1zM8 5h8v2H8V5zm7 14h-6v-4h6v4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div id="graph"></div>
+        <div class="legend">
+            <h4>Legend</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #1f77b4;"></div>
+                Data Analysis & Business Intelligence
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff7f0e;"></div>
+                Data Science & Machine Learning
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2ca02c;"></div>
+                AI & Robotics
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #d62728;"></div>
+                Data Engineering & Management
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #9467bd;"></div>
+                Research and Development
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff9800;"></div>
+                Jobs
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ccc;"></div>
+                Connections
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: none; border: 2px dashed #ccc;"></div>
+                Dashed Links
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: none; border: 2px solid #ff9800;"></div>
+                Leader Lines
+            </div>
+        </div>
+        <div class="filters" aria-label="Category Filters">
+            <h4>Filters</h4>
+            <label><input type="checkbox" class="filter-checkbox" value="Data Analysis & Business Intelligence" checked> Data Analysis & Business Intelligence</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Data Science & Machine Learning" checked> Data Science & Machine Learning</label>
+            <label><input type="checkbox" class="filter-checkbox" value="AI & Robotics" checked> AI & Robotics</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Data Engineering & Management" checked> Data Engineering & Management</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Research and Development" checked> Research and Development</label>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для описания профессии -->
+    <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <span class="close-button" role="button" aria-label="Close Modal">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+    
+    <!-- Панель сравнения профессий -->
+    <div id="comparison-panel" class="comparison-panel" aria-label="Comparison Panel">
+        <h3>Compare Jobs</h3>
+        <ul id="comparison-list"></ul>
+        <button id="compare-button" class="compare-button" aria-label="Compare Selected Jobs">Compare</button>
+    </div>
+    
+    <!-- Индикатор загрузки -->
+    <div id="loading-indicator" class="loading-indicator" aria-hidden="true">
+        <div class="spinner"></div>
+        <span>Loading...</span>
+    </div>
+    
+    <!-- Подключение скрипта -->
+    <script src="script.js"></script>
+</body>
+</html>
